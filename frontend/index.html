@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memento Pocket App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="top-bar"><span>11:00</span><div class="top-icons">🔋</div></div>
+        
+        <div class="app-container">
+            <header>
+                <h2>Memento Pocket</h2>
+                <div class="status-panel">
+                    <p id="conn-status">Estado: <span>Desconectado</span></p>
+                    <p id="battery-status">Batería: --</p>
+                    <p id="storage-status">Almacenamiento: -- / 16GB</p>
+                </div>
+            </header>
+
+            <div class="menu section" id="main-menu">
+                <button onclick="toggleConnection()" class="btn">
+                    <span class="icon">💡</span> 
+                    <span class="btn-text">Conexión al Dispositivo <small id="conn-mode-text">(Ninguna)</small></span>
+                </button>
+                <button onclick="showSection('files')" class="btn">
+                    <span class="icon folder-icon">📁</span> <span class="btn-text">Ver Archivos</span>
+                </button>
+                <button onclick="showSection('transfer')" class="btn">
+                    <span class="icon folder-icon">📂</span> <span class="btn-text">Transferir Archivos</span>
+                </button>
+                <button onclick="showSection('pins-menu')" class="btn">
+                    <span class="icon key-icon">🔑</span> <span class="btn-text">Gestionar PINs</span>
+                </button>
+                <button onclick="activateBuzzer()" class="btn">
+                    <span class="icon audio-icon">🔊</span> <span class="btn-text">Llamado al Dispositivo</span>
+                </button>
+                <button onclick="showSection('config-menu')" class="btn">
+                    <span class="icon gear-icon">⚙️</span> <span class="btn-text">Configuración</span>
+                </button>
+            </div>
+
+            <!-- Transferir -->
+            <div id="transfer" class="section hidden">
+                <button onclick="showSection('main-menu')" class="back-btn">⬅ Volver</button>
+                <h3>Transferir Archivo</h3>
+                <input type="file" id="fileInput" class="custom-file-input">
+                <input type="password" id="filePin" placeholder="PIN Numérico de Seguridad">
+                <button onclick="transferFile()" class="btn submit-btn">Encriptar y Transferir</button>
+            </div>
+
+            <!-- Ver Archivos -->
+            <div id="files" class="section hidden">
+                <button onclick="showSection('main-menu')" class="back-btn">⬅ Volver</button>
+                <h3>Archivos Seguros</h3>
+                
+                <input type="text" id="searchFiles" placeholder="🔍 Buscar por nombre..." oninput="renderFiles(currentFilterFiles, 'file-list')">
+                <div class="categories">
+                    <button onclick="renderFiles('image', 'file-list')" class="cat-btn">🖼️ Imágenes</button>
+                    <button onclick="renderFiles('video', 'file-list')" class="cat-btn">🎥 Videos</button>
+                    <button onclick="renderFiles('document', 'file-list')" class="cat-btn">📄 Documentos</button>
+                    <button onclick="renderFiles('all', 'file-list')" class="cat-btn">📦 Otros (Todos)</button>
+                </div>
+                
+                <div id="file-list"></div>
+                <div id="file-reader" class="hidden">
+                    <input type="password" id="readPin" placeholder="PIN para desencriptar">
+                    <button onclick="readFile()" class="submit-btn btn">🔓 Desbloquear</button>
+                </div>
+            </div>
+
+            <!-- Previsualización -->
+            <div id="preview-modal" class="section hidden">
+                <button onclick="closePreview()" class="back-btn">⬅ Cerrar Vista</button>
+                <div id="preview-container"></div>
+                <div class="actions">
+                    <button onclick="copyFile()" class="action-btn">📥 Copiar</button>
+                    <button onclick="cutFile()" class="action-btn">✂️ Cortar</button>
+                    <button onclick="deleteFile()" class="action-btn delete-btn">🗑️ Eliminar</button>
+                </div>
+            </div>
+
+            <!-- Gestionar PINs -->
+            <div id="pins-menu" class="section hidden">
+                <button onclick="showSection('main-menu')" class="back-btn">⬅ Volver</button>
+                <h3>Modificar PIN</h3>
+                
+                <input type="text" id="searchPins" placeholder="🔍 Buscar por nombre..." oninput="renderFiles(currentFilterPins, 'pin-file-list')">
+                <div class="categories">
+                    <button onclick="renderFiles('image', 'pin-file-list')" class="cat-btn">🖼️ Imágenes</button>
+                    <button onclick="renderFiles('video', 'pin-file-list')" class="cat-btn">🎥 Videos</button>
+                    <button onclick="renderFiles('document', 'pin-file-list')" class="cat-btn">📄 Documentos</button>
+                    <button onclick="renderFiles('all', 'pin-file-list')" class="cat-btn">📦 Otros (Todos)</button>
+                </div>
+
+                <div id="pin-file-list"></div>
+                <div id="pin-changer" class="hidden" style="margin-top:15px;">
+                    <input type="password" id="oldPin" placeholder="PIN Actual">
+                    <input type="password" id="newPin" placeholder="Nuevo PIN">
+                    <button onclick="changePin()" class="btn submit-btn">Actualizar PIN</button>
+                </div>
+            </div>
+
+            <!-- Configuración -->
+            <div id="config-menu" class="section hidden">
+                <button onclick="showSection('main-menu')" class="back-btn">⬅ Volver</button>
+                <h3>Ajustes del Dispositivo</h3>
+                <div class="actions" style="margin-top:20px;">
+                    <button onclick="toggleTheme()" class="action-btn" style="background:#3b82f6;">🌓 Cambiar Tema (Claro / Oscuro)</button>
+                    <button onclick="formatDevice()" class="action-btn delete-btn">⚠️ Formatear Dispositivo (Borrar todo)</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="home-bar"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

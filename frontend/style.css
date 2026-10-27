@@ -1,0 +1,70 @@
+body {
+    background-color: #a8a8a8; display: flex; justify-content: center; align-items: center;
+    height: 100vh; margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; transition: background 0.3s;
+}
+.phone-frame {
+    width: 380px; height: 820px; background: #0f0f0f; border-radius: 50px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6); position: relative; border: 12px solid #1a1a1a; overflow: hidden;
+    transition: background 0.3s, border-color 0.3s;
+}
+.notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 150px; height: 25px; background: #1a1a1a; border-radius: 0 0 20px 20px; z-index: 10; transition: background 0.3s;
+}
+.top-bar { display: flex; justify-content: space-between; padding: 12px 25px 0; color: white; font-size: 13px; font-weight: bold; transition: color 0.3s;}
+.home-bar { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 130px; height: 5px; background: #fff; border-radius: 10px; transition: background 0.3s;}
+.app-container { padding: 25px 20px; color: #fff; height: calc(100% - 60px); overflow-y: auto; overflow-x: hidden; transition: color 0.3s;}
+header { margin-bottom: 25px; padding-top: 10px; }
+h2 { margin: 0 0 10px 0; font-size: 24px; }
+.status-panel p { margin: 3px 0; font-size: 14px; color: #9ca3af; }
+
+.btn {
+    width: 100%; background: #1e1e1e; color: #e5e5e5; border: none; padding: 18px 20px;
+    margin-bottom: 12px; border-radius: 16px; font-size: 16px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; gap: 15px; transition: transform 0.15s ease, background 0.2s ease, color 0.3s;
+}
+.btn:active { transform: scale(0.96); background: #2c2c2c; }
+.btn-text { flex-grow: 1; text-align: left; white-space: nowrap; }
+.btn-text small { color: #888; font-size: 13px; margin-left: 5px;}
+.icon { font-size: 20px; width: 25px; text-align: center; }
+
+.hidden { display: none !important; }
+.section { animation: slideIn 0.35s cubic-bezier(0.25, 1, 0.5, 1); display: block; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+input {
+    width: 100%; background: #1c1c1e; border: 1px solid #333; color: white;
+    padding: 15px; margin-bottom: 15px; border-radius: 12px; box-sizing: border-box; font-size: 15px; transition: all 0.3s;
+}
+input:focus { outline: none; border-color: #2563eb; }
+.submit-btn { background: #2563eb !important; color: white !important; justify-content: center; }
+.back-btn { background: transparent; color: #60a5fa; border: none; font-size: 16px; padding: 0 0 15px 0; cursor: pointer; transition: opacity 0.2s;}
+.back-btn:active { opacity: 0.5; }
+.categories { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+.cat-btn { background: #333; color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: transform 0.2s, background 0.3s, color 0.3s; flex-shrink: 0;}
+.cat-btn:active { transform: scale(0.9); }
+.file-item { background: #1e1e1e; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; font-size: 14px; transition: background 0.2s, color 0.3s;}
+.file-item:active { background: #333; }
+.file-item span { color: #888; font-size: 12px; display: block; margin-top: 5px;}
+
+#preview-container { text-align: center; margin: 15px 0; background: #000; border-radius: 10px; padding: 10px;}
+#preview-container img, #preview-container iframe { max-width: 100%; border-radius: 8px; }
+.actions { display: flex; flex-direction: column; gap: 10px; }
+.action-btn { padding: 14px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; background: #333; color: white; transition: transform 0.15s, background 0.3s, color 0.3s;}
+.action-btn:active { transform: scale(0.96); }
+.delete-btn { background: #dc2626 !important; }
+
+/* MODO CLARO */
+body.light-mode { background-color: #e5e7eb; }
+body.light-mode .phone-frame { background: #f9fafb; border-color: #d1d5db; }
+body.light-mode .notch { background: #d1d5db; }
+body.light-mode .top-bar { color: #111827; }
+body.light-mode .home-bar { background: #111827; }
+body.light-mode .app-container { color: #111827; }
+body.light-mode .btn { background: #ffffff; color: #111827; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+body.light-mode .btn:active { background: #f3f4f6; }
+body.light-mode input { background: #ffffff; color: #111827; border: 1px solid #d1d5db; }
+body.light-mode .cat-btn { background: #e5e7eb; color: #111827; }
+body.light-mode .file-item { background: #ffffff; border: 1px solid #e5e7eb; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+body.light-mode .file-item:active { background: #f3f4f6; }
+body.light-mode .action-btn { background: #e5e7eb; color: #111827; }
